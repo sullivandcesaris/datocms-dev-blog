@@ -5,10 +5,12 @@ import Intro from "../components/intro";
 import MoreStories from "../components/more-stories";
 import { HelmetDatoCms } from "gatsby-source-datocms";
 import { graphql } from "gatsby";
+import Events from "../components/events";
 
-export default function Index({ data: { allPosts, site, blog } }) {
+export default function Index({ data: { allPosts, allEvents,site, blog } }) {
   const heroPost = allPosts.nodes[0];
   const morePosts = allPosts.nodes.slice(1);
+  const eventList = allEvents.nodes;
 
   return (
     <Container>
@@ -25,6 +27,7 @@ export default function Index({ data: { allPosts, site, blog } }) {
         />
       )}
       {morePosts.length > 0 && <MoreStories posts={morePosts} />}
+      <Events title="Eventos" EventList={eventList} />
     </Container>
   );
 }
@@ -64,5 +67,13 @@ export const query = graphql`
         }
       }
     }
+    allEvents: allDatoCmsEvent {
+    nodes {
+      nomeDoEvento
+      id
+      descricao
+      local
+    }
+  }
   }
 `;
